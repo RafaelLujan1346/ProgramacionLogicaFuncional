@@ -22,6 +22,10 @@ header{
 header > .logo >img{
     width: 100px;
 }
+header > nav{
+    gap: 20px;
+    display: flex ;
+}
 header > nav > a{
     margin: o 15px;
     color: var(--texto);
@@ -74,7 +78,7 @@ header > nav > a{
     z-index: 10;
     background-image: url(https://media.tenor.com/xSXTkAlLjbgAAAAM/homer.gif);
     background-size: 100% 100%;
-    opacity: 0.8;
+    opacity: 0.3;
     top: 0;
     left: 0;
 }

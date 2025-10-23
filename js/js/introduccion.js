@@ -87,6 +87,56 @@ document.querySelector("#ViejoJoven").addEventListener('click', (evento) => {
     res.sort((a, b) => a.personaje.age - b.personaje.age);
     imprimir(res);console.log("arreglo viejo joven", arr_original)
 });
+document.querySelector("#Estudiantes").addEventListener('click', (evento) => {
+    evento.preventDefault();
+    let res = arr_original.filter(item => 
+        item.personaje.occupation && 
+        item.personaje.occupation.toLowerCase().includes('student')
+    );
+    imprimir(res);
+    console.log("estudiantes:", res);
+});
+// ...existing code...
+document.querySelector("#LinkFecha")?.addEventListener('click', (evento) => {
+    evento.preventDefault();
+    const cutoff = new Date('1980-02-01');
+    const parseDate = s => {
+        if (!s) return null;
+        s = String(s).trim();
+        let m = s.match(/^(\d{4})[-\/](\d{2})[-\/](\d{2})$/); // YYYY-MM-DD or YYYY/MM/DD
+        if (m) return new Date(`${m[1]}-${m[2]}-${m[3]}`);
+        m = s.match(/^(\d{2})[\/\-](\d{2})[\/\-](\d{4})$/); // DD/MM/YYYY or DD-MM-YYYY
+        if (m) return new Date(`${m[3]}-${m[2]}-${m[1]}`);
+        const parsed = new Date(s);
+        return isNaN(parsed) ? null : parsed;
+    };
+    const res = arr_original.filter(item => {
+        const p = item.personaje || {};
+        const raw = p.dateOfBirth || p.birthdate || p.dob || p.birthday || p.birth || p.born;
+        const d = parseDate(raw);
+        return d && d < cutoff;
+    });
+    imprimir(res);
+    console.log("menores a 1980:", res);
+});
+// ...existing code...
+// Buscar solo por "phrases" (usa un input con id="BuscarFrases")
+document.querySelector('#Buscar')?.addEventListener('input', (e) => {
+    const q = String(e.target.value || '').trim().toLowerCase();
+    if (!q) { imprimir(arr_original); return; }
+    const res = arr_original.filter(item => {
+        const p = item.personaje || {};
+        const phrases = p.phrases;
+        if (!phrases) return false;
+        if (Array.isArray(phrases)) {
+            return phrases.some(ph => String(ph).toLowerCase().includes(q));
+        }
+        return String(phrases).toLowerCase().includes(q);
+    });
+    imprimir(res);
+});
+// ...existing code...
+// ...existing code...
 /*
     Muertos
     Menores de edad
